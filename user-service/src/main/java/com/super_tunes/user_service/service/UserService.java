@@ -1,18 +1,24 @@
-package com.spotify.user_service.service;
+package com.super_tunes.user_service.service;
 
-import com.spotify.user_service.entity.User;
-import com.spotify.user_service.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.super_tunes.user_service.dto.request.UserCreateRequest;
+import com.super_tunes.user_service.dto.request.UserUpdateRequest;
+import com.super_tunes.user_service.entity.User;
+import com.super_tunes.user_service.repository.UserRepository;
+
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public Optional<User> getUserByEmail(String email){
@@ -30,22 +36,27 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(User user){
-        if (userRepository.existsByEmail(user.getEmail())){
-            throw new RuntimeException("Email Already exists: "+user.getEmail());
+    public User createUser(UserCreateRequest request){
+        if (userRepository.existsByEmail(request.email())){
+            throw new RuntimeException("Email Already exists: "+request.email());
         }
-        if (userRepository.existsById(user.getId())){
-            throw new RuntimeException("User Name Already Exists: "+user.getId());
+        if (userRepository.existsByUsername(request.username())){
+            throw new RuntimeException("User Name Already Exists: "+request.username());
         }
+
+        User user = new User();
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
         return userRepository.save(user);
     }
 
     @Transactional
-    public User updateUser(Long id, User updatedUser){
+    public User updateUser(Long id, UserUpdateRequest request){
         return userRepository.findById(id).map(user -> {
-            user.setUsername(updatedUser.getUsername());
-            user.setEmail(updatedUser.getEmail());
-            user.setPassword(updatedUser.getPassword());
+            user.setUsername(request.username());
+            user.setEmail(request.email());
+            user.setPassword(request.password());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User Not Found with id: "+id));
     }

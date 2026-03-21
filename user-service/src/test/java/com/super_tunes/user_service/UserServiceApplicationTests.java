@@ -1,4 +1,4 @@
-package com.spotify.user_service;
+package com.super_tunes.user_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

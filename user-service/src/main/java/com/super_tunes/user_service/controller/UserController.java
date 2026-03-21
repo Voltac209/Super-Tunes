@@ -1,10 +1,16 @@
-package com.spotify.user_service.controller;
+package com.super_tunes.user_service.controller;
 
-import com.spotify.user_service.entity.User;
-import com.spotify.user_service.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.super_tunes.user_service.entity.User;
+import com.super_tunes.user_service.service.UserService;
+
+import jakarta.validation.Valid;
+import com.super_tunes.user_service.dto.request.UserCreateRequest;
+import com.super_tunes.user_service.dto.request.UserUpdateRequest;
+
 import java.util.List;
 
 @RestController
@@ -32,13 +38,13 @@ public class UserController {
    }
 
    @PostMapping
-   public ResponseEntity<User> createUser(@RequestBody User user){
-    return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
+   public ResponseEntity<User> createUser(@RequestBody @Valid UserCreateRequest request){
+    return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
    }
 
    @PutMapping("/{id}")
-   public ResponseEntity<User> updateUser(@PathVariable Long id,@RequestBody User user){
-    return ResponseEntity.ok(userService.updateUser(id,user));
+   public ResponseEntity<User> updateUser(@PathVariable Long id,@RequestBody @Valid UserUpdateRequest request){
+    return ResponseEntity.ok(userService.updateUser(id,request));
    }
 
    @DeleteMapping("/{id}")

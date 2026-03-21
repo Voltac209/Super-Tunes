@@ -1,8 +1,10 @@
-package com.spotify.user_service.repository;
+package com.super_tunes.user_service.repository;
 
-import com.spotify.user_service.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.super_tunes.user_service.entity.User;
+
 import java.util.Optional;
 
 @Repository
