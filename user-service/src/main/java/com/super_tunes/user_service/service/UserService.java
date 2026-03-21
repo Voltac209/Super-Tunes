@@ -7,6 +7,7 @@ import com.super_tunes.user_service.dto.request.UserCreateRequest;
 import com.super_tunes.user_service.dto.request.UserUpdateRequest;
 import com.super_tunes.user_service.entity.User;
 import com.super_tunes.user_service.repository.UserRepository;
+import com.super_tunes.user_service.dto.response.UserResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,10 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private UserResponse toUserResponse(User user){
+        return new UserResponse(user.getId(),user.getUsername(),user.getEmail(),user.getCreatedAt(),user.getUpdatedAt());
+    }
     private final UserRepository userRepository;
     
     public UserService(UserRepository userRepository) {
@@ -21,22 +26,22 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> getUserByEmail(String email){
-        return userRepository.findByEmail(email);
+    public Optional<UserResponse> getUserResponseByEmail(String email){
+        return userRepository.findByEmail(email).map(this::toUserResponse);
     }
 
     @Transactional(readOnly = true)
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsersResponses(){
+        return userRepository.findAll().stream().map(this::toUserResponse).toList();
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserById(Long id){
-        return userRepository.findById(id);
+    public Optional<UserResponse> getUserResponseById(Long id){
+        return userRepository.findById(id).map(this::toUserResponse);
     }
 
     @Transactional
-    public User createUser(UserCreateRequest request){
+    public UserResponse createUser(UserCreateRequest request){
         if (userRepository.existsByEmail(request.email())){
             throw new RuntimeException("Email Already exists: "+request.email());
         }
@@ -48,17 +53,19 @@ public class UserService {
         user.setUsername(request.username());
         user.setEmail(request.email());
         user.setPassword(request.password());
-        return userRepository.save(user);
+        userRepository.save(user);
+        return toUserResponse(user);
     }
 
     @Transactional
-    public User updateUser(Long id, UserUpdateRequest request){
-        return userRepository.findById(id).map(user -> {
+    public UserResponse updateUser(Long id, UserUpdateRequest request){
+        User usr=userRepository.findById(id).map(user -> {
             user.setUsername(request.username());
             user.setEmail(request.email());
             user.setPassword(request.password());
-            return userRepository.save(user);
-        }).orElseThrow(() -> new RuntimeException("User Not Found with id: "+id));
+            return user;
+        }).orElseThrow(()->new RuntimeException("User Not Found with id: "+id));
+        return toUserResponse(usr);
     }
 
     @Transactional

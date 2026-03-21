@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.super_tunes.user_service.entity.User;
 import com.super_tunes.user_service.service.UserService;
 
 import jakarta.validation.Valid;
 import com.super_tunes.user_service.dto.request.UserCreateRequest;
 import com.super_tunes.user_service.dto.request.UserUpdateRequest;
+import com.super_tunes.user_service.dto.response.UserResponse;
 
 import java.util.List;
 
@@ -23,32 +23,32 @@ public class UserController {
    }
 
    @GetMapping
-   public ResponseEntity<List<User>> getAllUsers(){
-    return ResponseEntity.ok(userService.getAllUsers());
+   public ResponseEntity<List<UserResponse>> getAllUsers(){
+    return ResponseEntity.ok(userService.getAllUsersResponses());
    }
 
    @GetMapping("/{id}")
-   public ResponseEntity<User> getUserById(@PathVariable Long id){
-    return userService.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+   public ResponseEntity<UserResponse> getUserById(@PathVariable Long id){
+    return userService.getUserResponseById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
    }
 
    @GetMapping("/email/{email}")
-   public ResponseEntity<User> getUserByEmail(@PathVariable String email){
-    return userService.getUserByEmail(email).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+   public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email){
+    return userService.getUserResponseByEmail(email).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
    }
 
    @PostMapping
-   public ResponseEntity<User> createUser(@RequestBody @Valid UserCreateRequest request){
+   public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserCreateRequest request){
     return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
    }
 
    @PutMapping("/{id}")
-   public ResponseEntity<User> updateUser(@PathVariable Long id,@RequestBody @Valid UserUpdateRequest request){
+   public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,@RequestBody @Valid UserUpdateRequest request){
     return ResponseEntity.ok(userService.updateUser(id,request));
    }
 
    @DeleteMapping("/{id}")
-   public ResponseEntity<User> deleteUser(@PathVariable Long id){
+   public ResponseEntity<Void> deleteUser(@PathVariable Long id){
     userService.deleteUser(id);
     return ResponseEntity.noContent().build();
    }
