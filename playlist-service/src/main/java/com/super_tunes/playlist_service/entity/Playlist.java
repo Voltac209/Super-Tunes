@@ -1,7 +1,7 @@
 package com.super_tunes.playlist_service.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 @Entity
 @Table(name="playlists")
 public class Playlist {
@@ -16,15 +16,19 @@ public class Playlist {
     private Long userId;
 
     @Column(nullable=false, updatable=false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(nullable=false)
+    private LocalDateTime updatedAt;
 
     public Playlist(){}
 
-    public Playlist(Long id,String title,Long userId,LocalDate createdAt){
+    public Playlist(Long id,String title,Long userId){
         this.id=id;
         this.title=title;
         this.userId=userId;
-        this.createdAt=createdAt;
+        this.createdAt=LocalDateTime.now();
+        this.updatedAt=LocalDateTime.now();
     }
 
     public Long getId(){
@@ -51,7 +55,15 @@ public class Playlist {
         this.userId=newUserId;
     }
 
-    public LocalDate getCreatedAt(){
+    public void setCreatedAt(){
+        this.createdAt=LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreatedAt(){
         return this.createdAt;
+    }
+
+    public void updatedAt(){
+        this.updatedAt=LocalDateTime.now();
     }
 }
