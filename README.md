@@ -13,7 +13,7 @@
 
 <h3 id="introduction">Introduction</h3>
 <p>
-   <b>Super Tunes</b> is microservices backend project for a music platform.
+   <b>Super Tunes</b> is a microservices backend project for a music platform.
    The system is split into independent Spring Boot services for users, songs, and playlists,
    with service discovery and API gateway support.
 </p>
@@ -42,7 +42,7 @@
 
 <h3 id="tech-stack">Tech Stack</h3>
 <ul>
-   <li>Java 24</li>
+   <li>Java 17+</li>
    <li>Spring Boot</li>
    <li>Spring Cloud (Eureka)</li>
    <li>Spring Data JPA (Hibernate)</li>
@@ -52,7 +52,7 @@
 
 <h3 id="requirements">Requirements</h3>
 <ul>
-   <li>Java 24 installed and configured.</li>
+   <li>Java 17+ installed and configured.</li>
    <li>Maven installed (or use each module's <code>./mvnw</code>).</li>
    <li>PostgreSQL running locally.</li>
    <li>Databases created:
@@ -80,6 +80,13 @@
    <li>Start <code>api-gateway</code></li>
    <li>Start <code>user-service</code>, <code>song-service</code>, <code>playlist-service</code></li>
 </ol>
+
+<p><b>Gateway test URLs:</b></p>
+<ul>
+   <li><code>http://localhost:8080/api/users</code></li>
+   <li><code>http://localhost:8080/api/songs</code></li>
+   <li><code>http://localhost:8080/api/playlists</code></li>
+</ul>
 
 <p>Run any single service:</p>
 <pre><code>cd user-service
@@ -116,10 +123,9 @@
 
 <h3 id="status">Current Status</h3>
 <ul>
-   <li><b>user-service</b>: mostly complete for student project scope.</li>
+   <li><b>user-service</b>: mostly complete.</li>
    <li><b>song-service</b>: basic CRUD complete.</li>
    <li><b>playlist-service</b>: basic CRUD complete.</li>
-   <li><b>api-gateway</b>: route wiring/verification pending.</li>
-   <li><b>discovery-server</b>: baseline setup complete.</li>
+   <li><b>api-gateway</b>: routes configured and verified with all services.</li>
+   <li><b>discovery-server</b>: configured and running as Eureka registry.</li>
 </ul>
-
