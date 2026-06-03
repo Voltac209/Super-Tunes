@@ -2,6 +2,7 @@ package com.super_tunes.user_service.service;
 
 import com.super_tunes.user_service.entity.User;
 import com.super_tunes.user_service.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +12,11 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -39,6 +42,7 @@ public class UserService {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Username already exists: " + user.getUsername());
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -47,7 +51,7 @@ public class UserService {
         return userRepository.findById(id).map(user -> {
             user.setUsername(updatedUser.getUsername());
             user.setEmail(updatedUser.getEmail());
-            user.setPassword(updatedUser.getPassword());
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
