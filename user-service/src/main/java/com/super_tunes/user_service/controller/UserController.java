@@ -1,55 +1,50 @@
 package com.super_tunes.user_service.controller;
 
+import com.super_tunes.user_service.entity.User;
+import com.super_tunes.user_service.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.super_tunes.user_service.service.UserService;
-
-import jakarta.validation.Valid;
-import com.super_tunes.user_service.dto.request.UserCreateRequest;
-import com.super_tunes.user_service.dto.request.UserUpdateRequest;
-import com.super_tunes.user_service.dto.response.UserResponse;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-   private final UserService userService;
-   
-   public UserController(UserService userService){
-    this.userService=userService;
-   }
+    private final UserService userService;
 
-   @GetMapping
-   public ResponseEntity<List<UserResponse>> getAllUsers(){
-    return ResponseEntity.ok(userService.getAllUsersResponses());
-   }
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-   @GetMapping("/{id}")
-   public ResponseEntity<UserResponse> getUserById(@PathVariable Long id){
-    return userService.getUserResponseById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-   }
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
 
-   @GetMapping("/email/{email}")
-   public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email){
-    return userService.getUserResponseByEmail(email).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-   }
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
 
-   @PostMapping
-   public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserCreateRequest request){
-    return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
-   }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        return userService.findByEmail(email).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
 
-   @PutMapping("/{id}")
-   public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,@RequestBody @Valid UserUpdateRequest request){
-    return ResponseEntity.ok(userService.updateUser(id,request));
-   }
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
+    }
 
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-    userService.deleteUser(id);
-    return ResponseEntity.noContent().build();
-   }
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        return ResponseEntity.ok(userService.updateUser(id, user));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 }
