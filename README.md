@@ -8,7 +8,6 @@
     <li><a href="#installation-and-setup">Installation and Setup</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#api-overview">API Overview</a></li>
-    <li><a href="#status">Current Status</a></li>
 </ul>
 
 <h3 id="introduction">Introduction</h3>
