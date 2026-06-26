@@ -52,6 +52,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublic(String path, String method) {
+        if ("/".equals(path) || "/index.html".equals(path)) {
+            return true;
+        }
+        if (path.startsWith("/styles.css") || path.startsWith("/app.js") || path.startsWith("/favicon")) {
+            return true;
+        }
         if (path.startsWith("/auth/")) {
             return true;
         }
