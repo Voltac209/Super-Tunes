@@ -126,11 +126,3 @@
    <li><code>PUT /api/playlists/{id}</code></li>
    <li><code>DELETE /api/playlists/{id}</code></li>
 </ul>
-<h3 id="status">Current Status</h3>
-<ul>
-   <li><b>user-service</b>: mostly complete.</li>
-   <li><b>song-service</b>: basic CRUD complete.</li>
-   <li><b>playlist-service</b>: basic CRUD complete.</li>
-   <li><b>api-gateway</b>: routes configured and verified with all services.</li>
-   <li><b>discovery-server</b>: configured and running as Eureka registry.</li>
-</ul>
