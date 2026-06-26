@@ -136,12 +136,3 @@
    <li><code>POST /api/playlists/{id}/songs/{songId}</code></li>
    <li><code>DELETE /api/playlists/{id}/songs/{songId}</code></li>
 </ul>
-
-<h3 id="status">Current Status</h3>
-<ul>
-   <li><b>user-service</b>: mostly complete.</li>
-   <li><b>song-service</b>: basic CRUD complete.</li>
-   <li><b>playlist-service</b>: CRUD, ownership checks, and song ID association support complete.</li>
-   <li><b>api-gateway</b>: routes configured with JWT validation for protected requests.</li>
-   <li><b>discovery-server</b>: configured and running as Eureka registry.</li>
-</ul>
