@@ -36,6 +36,9 @@
    <li>Microservices-based backend design.</li>
    <li>Layered code structure: <code>controller</code>, <code>service</code>, <code>repository</code>, <code>entity</code>.</li>
    <li>Spring Data JPA integration with PostgreSQL.</li>
+   <li>JWT-based signup/login in <code>user-service</code> with BCrypt password hashing.</li>
+   <li>Gateway-level token validation for protected write routes.</li>
+   <li>Playlist ownership checks and playlist-song association storage by song ID.</li>
    <li>Request validation and centralized exception handling (user-service).</li>
    <li>Maven multi-module root setup for full-project build.</li>
 </ul>
@@ -83,9 +86,18 @@
 
 <p><b>Gateway test URLs:</b></p>
 <ul>
+   <li><code>http://localhost:8080/auth/signup</code></li>
+   <li><code>http://localhost:8080/auth/login</code></li>
    <li><code>http://localhost:8080/api/users</code></li>
    <li><code>http://localhost:8080/api/songs</code></li>
    <li><code>http://localhost:8080/api/playlists</code></li>
+</ul>
+
+<p><b>Auth behavior:</b></p>
+<ul>
+   <li><code>/auth/**</code> is public.</li>
+   <li><code>GET</code> requests to <code>/api/users</code>, <code>/api/songs</code>, and <code>/api/playlists</code> are public.</li>
+   <li>Non-<code>GET</code> requests through the gateway require a Bearer token.</li>
 </ul>
 
 <p>Run any single service:</p>
@@ -95,6 +107,8 @@
 <h3 id="api-overview">API Overview</h3>
 <p><b>User Service</b></p>
 <ul>
+   <li><code>POST /auth/signup</code></li>
+   <li><code>POST /auth/login</code></li>
    <li><code>GET /api/users</code></li>
    <li><code>GET /api/users/{id}</code></li>
    <li><code>GET /api/users/email/{email}</code></li>
@@ -119,13 +133,15 @@
    <li><code>POST /api/playlists</code></li>
    <li><code>PUT /api/playlists/{id}</code></li>
    <li><code>DELETE /api/playlists/{id}</code></li>
+   <li><code>POST /api/playlists/{id}/songs/{songId}</code></li>
+   <li><code>DELETE /api/playlists/{id}/songs/{songId}</code></li>
 </ul>
 
 <h3 id="status">Current Status</h3>
 <ul>
    <li><b>user-service</b>: mostly complete.</li>
    <li><b>song-service</b>: basic CRUD complete.</li>
-   <li><b>playlist-service</b>: basic CRUD complete.</li>
-   <li><b>api-gateway</b>: routes configured and verified with all services.</li>
+   <li><b>playlist-service</b>: CRUD, ownership checks, and song ID association support complete.</li>
+   <li><b>api-gateway</b>: routes configured with JWT validation for protected requests.</li>
    <li><b>discovery-server</b>: configured and running as Eureka registry.</li>
 </ul>

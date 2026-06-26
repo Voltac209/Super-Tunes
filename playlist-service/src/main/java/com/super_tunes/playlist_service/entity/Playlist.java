@@ -1,7 +1,11 @@
 package com.super_tunes.playlist_service.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
 @Table(name="playlists")
 public class Playlist {
@@ -21,6 +25,11 @@ public class Playlist {
     @Column(nullable=false)
     private LocalDateTime updatedAt;
 
+    @ElementCollection
+    @CollectionTable(name = "playlist_songs", joinColumns = @JoinColumn(name = "playlist_id"))
+    @Column(name = "song_id", nullable = false)
+    private Set<Long> songIds = new LinkedHashSet<>();
+
     public Playlist(){}
 
     public Playlist(Long id,String title,Long userId){
@@ -29,6 +38,7 @@ public class Playlist {
         this.userId=userId;
         this.createdAt=LocalDateTime.now();
         this.updatedAt=LocalDateTime.now();
+        this.songIds = new LinkedHashSet<>();
     }
 
     public Long getId(){
@@ -65,5 +75,17 @@ public class Playlist {
 
     public void updatedAt(){
         this.updatedAt=LocalDateTime.now();
+    }
+
+    public Set<Long> getSongIds() {
+        return songIds;
+    }
+
+    public void addSongId(Long songId) {
+        this.songIds.add(songId);
+    }
+
+    public void removeSongId(Long songId) {
+        this.songIds.remove(songId);
     }
 }
