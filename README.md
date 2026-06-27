@@ -1,6 +1,7 @@
 <h3>Table of Contents</h3>
 <ul>
     <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#demo-video">Demonstration</a></li>
     <li><a href="#architecture">Architecture</a></li>
     <li><a href="#features">Key Features</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
@@ -20,6 +21,9 @@
    <li>Each service owns its own logic and database schema.</li>
    <li>Services are discoverable through Eureka and can be routed through API Gateway.</li>
 </ul>
+
+<h3 id="demo-video">Demo Video</h3>
+<a href="https://www.youtube.com/watch?v=Y8kF3DttSiU"><img src="thumbnail.png" width="720"></a>
 
 <h3 id="architecture">Architecture</h3>
 <ul>
